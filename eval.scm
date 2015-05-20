@@ -2,6 +2,7 @@
     (lisp-eval)
   (import chicken scheme)
   (import (only data-structures conc))
+  (import (only env make-env))
 
   (define (lboolean? exp)
     (and (symbol? exp)
@@ -60,6 +61,39 @@
       (if (list? args)
 	  (list 'fn #t args (caddr exp) env)
 	  (list 'fn #f args (caddr exp) env))))
+
+  (define (application? exp)
+    (list? exp))
+
+  (define (eval-arguments args env)
+    (if (null? args)
+	args
+	(cons (lisp-eval (car args) env)
+	      (eval-arguments (cdr args) env))))
+  
+  (define (extend-environment symbols vals env)
+    (let ((cenv (make-env env))
+	  (i 0))
+      (for-each (lambda (x)
+		  (cenv 'def x (list-ref vals i))
+		  (set! i (+ i 1)))
+		symbols)
+      cenv))
+  
+  (define (apply-lambda fn args env)
+    (let ((des-args (cadr fn))
+	  (params (caddr fn))
+	  (body (cadddr fn))
+	  (fn-env (car (cddddr fn))))
+      (lisp-eval body (extend-environment params args fn-env))))
+  
+  (define (lisp-apply exp env)
+    (let ((operator (lisp-eval (car exp) env))
+	  (args (eval-arguments (cdr exp) env)))
+      (if (list? operator)
+	  (cond ((eq? 'fn (car operator)) (apply-lambda operator args env))
+		(abort '(list "cannot apply")))
+	  (abort '(lisp "cannot apply")))))
   
   (define (lisp-eval exp env)
     (cond ((self-evaluating? exp) exp)
@@ -69,6 +103,7 @@
 	  ((symbol? exp) (env 'get exp))
 	  ((if? exp) (eval-if exp env))
 	  ((lambda? exp) (make-lambda exp env))
+	  ((application? exp) (lisp-apply exp env))
 	  (else (abort `(lisp ,(conc "cannot evaluate " exp))))))
   
   )
