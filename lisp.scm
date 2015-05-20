@@ -2,12 +2,6 @@
 (include "env")
 (import (only env make-env))
 
-;; helpers
-(define (first l) (car l))
-(define (rest l) (cdr l))
-(define (second l) (cadr l))
-(define (third l) (caddr l))
-
 ;; do not eval, pass
 (define (lisp-eval exp env)
   exp)
@@ -18,8 +12,8 @@
   ;; else abort
   (handle-exceptions
       exn
-      (cond ((and (list? exn) (eq? (first exn) 'lisp))
-	     (begin (print (second exn))
+      (cond ((and (list? exn) (eq? (car exn) 'lisp))
+	     (begin (print (cadr exn))
 		    (repl env)))
 	    (else (abort exn)))
 
