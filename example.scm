@@ -11,3 +11,8 @@
 (def list (fn* xs xs))
 (list '1 '2 '3) ;; (1 2 3)
 
+(def l '(1 2 3))
+(first l) ;; 1
+(rest l) ;; (2 3)
+
+

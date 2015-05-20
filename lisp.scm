@@ -2,7 +2,7 @@
 (include "env")
 (import (only env make-env))
 (include "eval")
-(import (only eval lisp-eval))
+(import (only eval lisp-eval init-env))
 
 ;; Read Eval Print Loop
 (define (repl env)
@@ -27,4 +27,5 @@
 		       (repl env)))))))))
 
 (let ((env (make-env #f)))
+  (init-env env)
   (repl env))
