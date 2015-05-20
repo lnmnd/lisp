@@ -30,7 +30,6 @@
       (env 'set (cadr exp) value)
       value))  
 
-  ;; do not eval, pass
   (define (lisp-eval exp env)
     (cond ((quoted? exp) (quoted-exp exp))
 	  ((definition? exp) (eval-definition exp env))
