@@ -14,9 +14,16 @@
   (define (quoted-exp exp)
     (cadr exp))
 
+  (define (definition? exp)
+    (tagged-list? exp 'def))
+
+  (define (eval-definition exp env)
+    (env 'def (cadr exp) (lisp-eval (caddr exp) env)))
+  
   ;; do not eval, pass
   (define (lisp-eval exp env)
     (cond ((quoted? exp) (quoted-exp exp))
+	  ((definition? exp) (eval-definition exp env))
 	  (else (abort `(lisp ,(conc "cannot evaluate " exp))))))
   
   )
