@@ -85,7 +85,9 @@
 	  (params (caddr fn))
 	  (body (cadddr fn))
 	  (fn-env (car (cddddr fn))))
-      (lisp-eval body (extend-environment params args fn-env))))
+      (if des-args
+	  (lisp-eval body (extend-environment params args fn-env))
+	  (lisp-eval body (extend-environment (list params) (list args) fn-env)))))
   
   (define (lisp-apply exp env)
     (let ((operator (lisp-eval (car exp) env))

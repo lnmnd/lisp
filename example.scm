@@ -7,3 +7,7 @@
 
 (car (cons 'first 'second)) ;; first
 (cdr (cons 'first 'second)) ;; second
+
+(def list (fn* xs xs))
+(list '1 '2 '3) ;; (1 2 3)
+
