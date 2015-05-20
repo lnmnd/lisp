@@ -52,6 +52,15 @@
 	      (lisp-eval (cadddr exp) env))
 	  (abort `(lisp ,(conc "not a boolean: " predicate))))))
 
+  (define (lambda? exp)
+    (tagged-list? exp 'fn*))
+
+  (define (make-lambda exp env)
+    (let ((args (cadr exp)))
+      (if (list? args)
+	  (list 'fn #t args (caddr exp) env)
+	  (list 'fn #f args (caddr exp) env))))
+  
   (define (lisp-eval exp env)
     (cond ((self-evaluating? exp) exp)
 	  ((quoted? exp) (quoted-exp exp))
@@ -59,6 +68,7 @@
 	  ((reset? exp) (eval-reset exp env))
 	  ((symbol? exp) (env 'get exp))
 	  ((if? exp) (eval-if exp env))
+	  ((lambda? exp) (make-lambda exp env))
 	  (else (abort `(lisp ,(conc "cannot evaluate " exp))))))
   
   )
