@@ -22,10 +22,19 @@
       (env 'def (cadr exp) value)
       value))
 
+  (define (reset? exp)
+    (tagged-list? exp 'reset!))
+
+  (define (eval-reset exp env)
+    (let ((value (lisp-eval (caddr exp) env)))
+      (env 'set (cadr exp) value)
+      value))  
+
   ;; do not eval, pass
   (define (lisp-eval exp env)
     (cond ((quoted? exp) (quoted-exp exp))
 	  ((definition? exp) (eval-definition exp env))
+	  ((reset? exp) (eval-reset exp env))
 	  ((symbol? exp) (env 'get exp))
 	  (else (abort `(lisp ,(conc "cannot evaluate " exp))))))
   
