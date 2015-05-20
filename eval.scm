@@ -18,7 +18,9 @@
     (tagged-list? exp 'def))
 
   (define (eval-definition exp env)
-    (env 'def (cadr exp) (lisp-eval (caddr exp) env)))
+    (let ((value (lisp-eval (caddr exp) env)))
+      (env 'def (cadr exp) value)
+      value))
 
   ;; do not eval, pass
   (define (lisp-eval exp env)
