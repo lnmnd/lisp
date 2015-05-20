@@ -1,10 +1,8 @@
 (declare (uses library ports))
 (include "env")
 (import (only env make-env))
-
-;; do not eval, pass
-(define (lisp-eval exp env)
-  exp)
+(include "eval")
+(import (only eval lisp-eval))
 
 ;; Read Eval Print Loop
 (define (repl env)
