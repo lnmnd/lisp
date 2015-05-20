@@ -1,13 +1,12 @@
 (declare (uses library ports))
+(include "env")
+(import (only env make-env))
 
 ;; helpers
 (define (first l) (car l))
 (define (rest l) (cdr l))
 (define (second l) (cadr l))
 (define (third l) (caddr l))
-
-(define (make-env parent)
-  '())
 
 (define (nothing? x)
   (and (symbol? x) (eq? x 'nothing)))
