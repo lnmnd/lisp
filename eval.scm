@@ -1,5 +1,5 @@
 (module eval
-    (lisp-eval)
+    (lisp-eval init-env)
   (import chicken scheme)
   (import (only data-structures conc))
   (import (only env make-env))
@@ -88,12 +88,16 @@
       (if des-args
 	  (lisp-eval body (extend-environment params args fn-env))
 	  (lisp-eval body (extend-environment (list params) (list args) fn-env)))))
+
+  (define (apply-primitive fn args env)
+    ((cadr fn) args))
   
   (define (lisp-apply exp env)
     (let ((operator (lisp-eval (car exp) env))
 	  (args (eval-arguments (cdr exp) env)))
       (if (list? operator)
 	  (cond ((eq? 'fn (car operator)) (apply-lambda operator args env))
+		((eq? 'primfn (car operator)) (apply-primitive operator args env))
 		(abort '(list "cannot apply")))
 	  (abort '(lisp "cannot apply")))))
   
@@ -107,5 +111,33 @@
 	  ((lambda? exp) (make-lambda exp env))
 	  ((application? exp) (lisp-apply exp env))
 	  (else (abort `(lisp ,(conc "cannot evaluate " exp))))))
+
+  ;; primitive functions
+  (define (prim-first args)
+    (caar args))
+
+  (define (prim-rest args)
+    (cdar args))
+
+  (define (prim-cons args)
+    (let ((item (car args))
+	  (xs (cadr args)))
+      (cons item xs)))
+
+  (define (prim-eq? args)
+    (let ((a (car args))
+	  (b (cadr args)))
+      (if (eq? a b)
+	  'true
+	  'false)))
+  
+  (define (add-primitive symbol fn env)
+    (env 'def symbol (list 'primfn fn)))
+
+  (define (init-env env)
+    (add-primitive 'first prim-first env)
+    (add-primitive 'rest prim-rest env)
+    (add-primitive 'cons prim-cons env)
+    (add-primitive 'eq? prim-eq? env))
   
   )

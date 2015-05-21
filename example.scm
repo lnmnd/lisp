@@ -1,13 +1,24 @@
 ((fn* (n) n) 'foo) ;; foo
 
 ;; thanks sussman
-(def cons (fn* (a b) (fn* (z) (z a b))))
-(def car (fn* (z) (z (fn* (a b) a))))
-(def cdr (fn* (z) (z (fn* (a b) b))))
+(def lcons (fn* (a b) (fn* (z) (z a b))))
+(def lcar (fn* (z) (z (fn* (a b) a))))
+(def lcdr (fn* (z) (z (fn* (a b) b))))
 
-(car (cons 'first 'second)) ;; first
-(cdr (cons 'first 'second)) ;; second
+(lcar (lcons 'first 'second)) ;; first
+(lcdr (lcons 'first 'second)) ;; second
 
 (def list (fn* xs xs))
 (list '1 '2 '3) ;; (1 2 3)
+
+(def l '(1 2 3))
+(first l) ;; 1
+(rest l) ;; (2 3)
+(cons '1 '(2 3)) ;; (1 2 3)
+
+(eq? 'foo 'foo) ;; true
+(eq? 'foo 'bar) ;; false
+(def empty-list '())
+(eq? empty-list '()) ;; true
+
 
