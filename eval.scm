@@ -123,6 +123,13 @@
     (let ((item (car args))
 	  (xs (cadr args)))
       (cons item xs)))
+
+  (define (prim-eq? args)
+    (let ((a (car args))
+	  (b (cadr args)))
+      (if (eq? a b)
+	  'true
+	  'false)))
   
   (define (add-primitive symbol fn env)
     (env 'def symbol (list 'primfn fn)))
@@ -130,6 +137,7 @@
   (define (init-env env)
     (add-primitive 'first prim-first env)
     (add-primitive 'rest prim-rest env)
-    (add-primitive 'cons prim-cons env))
+    (add-primitive 'cons prim-cons env)
+    (add-primitive 'eq? prim-eq? env))
   
   )

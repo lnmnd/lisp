@@ -16,5 +16,9 @@
 (rest l) ;; (2 3)
 (cons '1 '(2 3)) ;; (1 2 3)
 
+(eq? 'foo 'foo) ;; true
+(eq? 'foo 'bar) ;; false
+(def empty-list '())
+(eq? empty-list '()) ;; true
 
 
