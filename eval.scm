@@ -23,6 +23,21 @@
   (define (quoted-exp exp)
     (cadr exp))
 
+  (define (quasiquoted? exp)
+    (tagged-list? exp 'quasiquote))
+
+  (define (expand-unquote exp env)
+    (if (list? exp)
+	(if (eq? 'unquote (car exp))
+	    (lisp-eval (cadr exp) env)
+	    (map (lambda (x)
+		   (expand-unquote x env))
+		 exp))
+	exp))
+
+  (define (eval-quasiquoted exp env)
+    (expand-unquote (cadr exp) env))
+
   (define (definition? exp)
     (tagged-list? exp 'def))
 
@@ -104,6 +119,7 @@
   (define (lisp-eval exp env)
     (cond ((self-evaluating? exp) exp)
 	  ((quoted? exp) (quoted-exp exp))
+	  ((quasiquoted? exp) (eval-quasiquoted exp env))
 	  ((definition? exp) (eval-definition exp env))
 	  ((reset? exp) (eval-reset exp env))
 	  ((symbol? exp) (env 'get exp))

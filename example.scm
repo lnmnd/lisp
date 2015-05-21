@@ -21,4 +21,8 @@
 (def empty-list '())
 (eq? empty-list '()) ;; true
 
+`1 ;; 1
+`,'foo ;; foo
+`(1 2 ,(if true 'three 'four)) ;; (1 2 three)
+`(1 2 ,(if true `,'foo 'no)) ;; (1 2 foo)
 
