@@ -26,3 +26,14 @@
 `(1 2 ,(if true 'three 'four)) ;; (1 2 three)
 `(1 2 ,(if true `,'foo 'no)) ;; (1 2 foo)
 
+(def comment (mac* args false))
+(comment dont evaluate this)
+(def when (mac* (cond exp)
+		`(if ,cond ,exp false)))
+(when true 'its-true) ;; its-true
+(def defn (mac* (sym params body)
+		`(def ,sym (fn* ,params ,body))))
+(defn id (val) val)
+(id 'id!) ;; id!
+
+

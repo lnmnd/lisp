@@ -77,6 +77,31 @@
 	  (list 'fn #t args (caddr exp) env)
 	  (list 'fn #f args (caddr exp) env))))
 
+  (define (macro? exp)
+    (tagged-list? exp 'mac*))
+
+  (define (make-macro exp env)
+    (let ((args (cadr exp)))
+      (if (list? args)
+	  (list 'mac #t args (caddr exp) env)
+	  (list 'mac #f args (caddr exp) env))))
+
+  (define (macro-application? exp env)
+    (let ((operator (lisp-eval (car exp) env)))
+      (and (list? operator)
+	   (eq? 'mac (car operator)))))
+
+  (define (apply-macro exp env)
+    (let* ((fn (lisp-eval (car exp) env))
+	   (args (cdr exp))
+	   (des-args (cadr fn))
+	   (params (caddr fn))
+	   (body (cadddr fn))
+	   (mac-env (car (cddddr fn))))
+      (if des-args
+	  (lisp-eval (lisp-eval body (extend-environment params args mac-env)) env)
+	  (lisp-eval (lisp-eval body (extend-environment (list params) (list args) mac-env)) env))))
+  
   (define (application? exp)
     (list? exp))
 
@@ -125,6 +150,8 @@
 	  ((symbol? exp) (env 'get exp))
 	  ((if? exp) (eval-if exp env))
 	  ((lambda? exp) (make-lambda exp env))
+	  ((macro? exp) (make-macro exp env))
+	  ((macro-application? exp env) (apply-macro exp env))
 	  ((application? exp) (lisp-apply exp env))
 	  (else (abort `(lisp ,(conc "cannot evaluate " exp))))))
 
