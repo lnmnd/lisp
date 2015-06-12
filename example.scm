@@ -37,3 +37,4 @@
 (id 'id!) ;; id!
 
 
+(print-env)

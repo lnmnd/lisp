@@ -130,7 +130,7 @@
 	  (lisp-eval body (extend-environment (list params) (list args) fn-env)))))
 
   (define (apply-primitive fn args env)
-    ((cadr fn) args))
+    ((cadr fn) args env))
   
   (define (lisp-apply exp env)
     (let ((operator (lisp-eval (car exp) env))
@@ -156,23 +156,26 @@
 	  (else (abort `(lisp ,(conc "cannot evaluate " exp))))))
 
   ;; primitive functions
-  (define (prim-first args)
+  (define (prim-first args env)
     (caar args))
 
-  (define (prim-rest args)
+  (define (prim-rest args env)
     (cdar args))
 
-  (define (prim-cons args)
+  (define (prim-cons args env)
     (let ((item (car args))
 	  (xs (cadr args)))
       (cons item xs)))
 
-  (define (prim-eq? args)
+  (define (prim-eq? args env)
     (let ((a (car args))
 	  (b (cadr args)))
       (if (eq? a b)
 	  'true
 	  'false)))
+
+  (define (prim-print-env args env)
+    (env 'print))
   
   (define (add-primitive symbol fn env)
     (env 'def symbol (list 'primfn fn)))
@@ -181,6 +184,7 @@
     (add-primitive 'first prim-first env)
     (add-primitive 'rest prim-rest env)
     (add-primitive 'cons prim-cons env)
-    (add-primitive 'eq? prim-eq? env))
+    (add-primitive 'eq? prim-eq? env)
+    (add-primitive 'print-env prim-print-env env))
   
   )
