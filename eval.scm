@@ -44,7 +44,7 @@
   (define (eval-definition exp env)
     (let ((value (lisp-eval (caddr exp) env)))
       (env 'def (cadr exp) value)
-      value))
+      (cadr exp)))
 
   (define (reset? exp)
     (tagged-list? exp 'reset!))
@@ -52,7 +52,7 @@
   (define (eval-reset exp env)
     (let ((value (lisp-eval (caddr exp) env)))
       (env 'set (cadr exp) value)
-      value))
+      (cadr exp)))
 
   (define (if? exp)
     (tagged-list? exp 'if))
