@@ -35,17 +35,11 @@
     (define (get-symbol symbol)
       (get-symbol-it vals symbol))
 
-    (define (print-env)
-      (print vals)
-      (if parent
-	  (parent 'print-env)))
-    
     (lambda (msg . args)
       (apply (case msg
 	       ((def) def-symbol!)
 	       ((set) set-symbol!)
 	       ((get) get-symbol)
-	       ((print) print-env)
 	       (else (abort (list 'lisp (conc "unknown method " msg)))))
 	     args)))
   

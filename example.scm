@@ -35,6 +35,3 @@
 		`(def ,sym (fn* ,params ,body))))
 (defn id (val) val)
 (id 'id!) ;; id!
-
-
-(print-env)

@@ -174,9 +174,6 @@
 	  'true
 	  'false)))
 
-  (define (prim-print-env args env)
-    (env 'print))
-  
   (define (add-primitive symbol fn env)
     (env 'def symbol (list 'primfn fn)))
 
@@ -184,7 +181,6 @@
     (add-primitive 'first prim-first env)
     (add-primitive 'rest prim-rest env)
     (add-primitive 'cons prim-cons env)
-    (add-primitive 'eq? prim-eq? env)
-    (add-primitive 'print-env prim-print-env env))
+    (add-primitive 'eq? prim-eq? env))
   
   )
