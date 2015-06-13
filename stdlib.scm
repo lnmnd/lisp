@@ -14,19 +14,19 @@
 	       `(mac* ,(first args)
 		      ,(cons 'do (rest args)))))
 
-(def defmacro (mac args
-		   `(def ,(first args)
-			 ,(cons 'mac
-				(cons (first (rest args))
-				      (rest (rest args)))))))
+(def defmac (mac args
+		 `(def ,(first args)
+		       ,(cons 'mac
+			      (cons (first (rest args))
+				    (rest (rest args)))))))
 
-(defmacro comment args false)
+(defmac comment args false)
 
-(defmacro fn args
+(defmac fn args
   `(fn* ,(first args)
 	,(cons 'do (rest args))))
 
-(defmacro defn args
+(defmac defn args
   `(def ,(first args)
 	,(cons 'fn
 	       (cons (first (rest args))
