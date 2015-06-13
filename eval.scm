@@ -1,6 +1,6 @@
 (module eval
     (lisp-eval init-env)
-  (import chicken scheme)
+  (import chicken scheme ports)
   (import (only data-structures conc))
   (import (only env make-env))
 
@@ -209,6 +209,9 @@
 	(lambda (output-port)
 	  (display content output-port)))))
   
+  (define (prim-read-string args env)
+    (with-input-from-string (car args) read))
+
   (define (add-primitive symbol fn env)
     (env 'def symbol (list 'primfn fn)))
 
@@ -225,6 +228,8 @@
 
     (add-primitive 'conc prim-conc env)
     (add-primitive 'slurp prim-slurp env)
-    (add-primitive 'spit prim-spit env))
+    (add-primitive 'spit prim-spit env)
+
+    (add-primitive 'read-string prim-read-string env))
   
   )

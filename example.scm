@@ -52,3 +52,5 @@
 (slurp "text1.txt")
 (comment
  (spit "tmp.txt" "test\nfile\n"))
+(read-string "2") ;; 2
+(read-string "'(foo bar)") ;; (quote (foo bar))
