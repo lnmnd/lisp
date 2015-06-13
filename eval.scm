@@ -7,9 +7,10 @@
   (define (lboolean? exp)
     (and (symbol? exp)
 	 (or (eq? 'true exp) (eq? 'false exp))))
-  
+
   (define (self-evaluating? exp)
     (cond ((lboolean? exp) #t)
+	  ((number? exp) #t)
 	  (else #f)))
   
   (define (tagged-list? exp tag)
@@ -174,6 +175,18 @@
 	  'true
 	  'false)))
 
+  (define (prim-+ args env)
+    (apply + args))
+
+  (define (prim-- args env)
+    (apply - args))
+
+  (define (prim-* args env)
+    (apply * args))
+
+  (define (prim-/ args env)
+    (apply / args))    
+
   (define (add-primitive symbol fn env)
     (env 'def symbol (list 'primfn fn)))
 
@@ -181,6 +194,11 @@
     (add-primitive 'first prim-first env)
     (add-primitive 'rest prim-rest env)
     (add-primitive 'cons prim-cons env)
-    (add-primitive 'eq? prim-eq? env))
+    (add-primitive 'eq? prim-eq? env)
+
+    (add-primitive '+ prim-+ env)
+    (add-primitive '- prim-- env)
+    (add-primitive '* prim-* env)
+    (add-primitive '/ prim-/ env))
   
   )

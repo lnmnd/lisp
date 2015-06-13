@@ -35,3 +35,12 @@
 		`(def ,sym (fn* ,params ,body))))
 (defn id (val) val)
 (id 'id!) ;; id!
+
+;; numbers
+1
+2.3
+-7
+(+ 1 2 3) ;; 6
+(- 3 2) ;; 1
+(* 5 5) ;; 25
+(/ 10 2) ;; 5
