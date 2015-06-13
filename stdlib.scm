@@ -85,3 +85,12 @@
 	acc
 	(map-it (cons (f (first xs)) acc) f (rest xs))))
   (map-it (list) f (reverse xs)))
+
+
+;; files
+
+(defn load (file)
+  (eval (read-string
+	 (str "(do "
+	      (slurp file)
+	      ")"))))
