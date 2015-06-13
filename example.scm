@@ -54,3 +54,4 @@
  (spit "tmp.txt" "test\nfile\n"))
 (read-string "2") ;; 2
 (read-string "'(foo bar)") ;; (quote (foo bar))
+(eval (read-string "(/ 10 2)")) ;; 5

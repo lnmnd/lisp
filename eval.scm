@@ -212,6 +212,9 @@
   (define (prim-read-string args env)
     (with-input-from-string (car args) read))
 
+  (define (prim-eval args env)
+    (lisp-eval (car args) env))
+
   (define (add-primitive symbol fn env)
     (env 'def symbol (list 'primfn fn)))
 
@@ -230,6 +233,7 @@
     (add-primitive 'slurp prim-slurp env)
     (add-primitive 'spit prim-spit env)
 
-    (add-primitive 'read-string prim-read-string env))
+    (add-primitive 'read-string prim-read-string env)
+    (add-primitive 'eval prim-eval env))
   
   )
