@@ -39,12 +39,36 @@
 (defn second (xs)
   (first (rest xs)))
 
+(defn nth (xs index)
+  (if (eq? index 0)
+      (first xs)
+      (nth (rest xs) (- index 1))))
+
 (defn reverse (xs)
   (defn reverse-it (acc xs)
     (if (empty? xs)
 	acc
 	(reverse-it (cons (first xs) acc) (rest xs))))
   (reverse-it (list) xs))
+
+(defn append (xs x)
+  (reverse (cons x (reverse xs))))
+
+(defn take (n seq)
+  (defn take-it (acc n seq)
+    (if (eq? n 0)
+	acc
+	(if (empty? seq)
+	    acc
+	    (take-it (append acc (first seq)) (- n 1) (rest seq)))))
+  (take-it (list) n seq))
+
+(defn drop (n xs)
+  (if (eq? n 0)
+      xs
+      (if (empty? xs)
+	  xs
+	  (drop (- n 1) (rest xs)))))
 
 (defn filter (pred xs)
   (defn filter-it (acc pred xs)
