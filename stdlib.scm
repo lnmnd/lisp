@@ -86,6 +86,27 @@
 	(map-it (cons (f (first xs)) acc) f (rest xs))))
   (map-it (list) f (reverse xs)))
 
+(defn partition-2 (xs)
+  (defn partition-2-it (acc xs)
+    (if (empty? xs)
+	acc
+	(partition-2-it (cons (list (first xs) (second xs))
+			      acc)
+			(rest (rest xs)))))
+  (reverse (partition-2-it (list) xs)))
+
+
+;; let
+
+(defmac let (bindings body)
+  (defn let-it (bindings body)
+    (if (empty? bindings)
+	body
+	(let-it (rest bindings)
+		`((fn (,(first (first bindings))) ,body)
+		  ,(second (first bindings))))))
+  (let-it (reverse (partition-2 bindings)) body))
+
 
 ;; files
 
