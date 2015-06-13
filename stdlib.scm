@@ -121,6 +121,16 @@
 	   true
 	   ,(cons 'or (rest xs)))))
 
+(defmac cond* xs
+  (if (empty? xs)
+      false
+      `(if ,(first (first xs))
+	   ,(second (first xs))
+	   ,(cons 'cond* (rest xs)))))
+
+(defmac cond xs
+  (cons 'cond* (partition-2 xs)))
+
 
 ;; files
 
