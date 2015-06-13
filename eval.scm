@@ -191,6 +191,24 @@
   (define (prim-conc args env)
     (apply conc args))      
 
+  (define (prim-slurp args env)
+    (call-with-input-file (car args)
+      (lambda (input-port)
+	(let ((str ""))
+	  (let loop ((x (read-char input-port)))
+	    (if (not (eof-object? x))
+		(begin
+		  (set! str (conc str x))
+		  (loop (read-char input-port)))))
+	  str))))
+
+  (define (prim-spit args env)
+    (let ((file (car args))
+	  (content (cadr args)))
+      (call-with-output-file file
+	(lambda (output-port)
+	  (display content output-port)))))
+  
   (define (add-primitive symbol fn env)
     (env 'def symbol (list 'primfn fn)))
 
@@ -205,6 +223,8 @@
     (add-primitive '* prim-* env)
     (add-primitive '/ prim-/ env)
 
-    (add-primitive 'conc prim-conc env))
+    (add-primitive 'conc prim-conc env)
+    (add-primitive 'slurp prim-slurp env)
+    (add-primitive 'spit prim-spit env))
   
   )

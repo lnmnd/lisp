@@ -49,3 +49,6 @@
 ;; strings
 "foo"
 (conc "foo" " " "bar") ;; "foo bar"
+(slurp "text1.txt")
+(comment
+ (spit "tmp.txt" "test\nfile\n"))
