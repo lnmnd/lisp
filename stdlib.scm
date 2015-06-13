@@ -96,7 +96,7 @@
   (reverse (partition-2-it (list) xs)))
 
 
-;; let
+;; special forms
 
 (defmac let (bindings body)
   (defn let-it (bindings body)
@@ -106,6 +106,20 @@
 		`((fn (,(first (first bindings))) ,body)
 		  ,(second (first bindings))))))
   (let-it (reverse (partition-2 bindings)) body))
+
+(defmac and xs
+  (if (empty? xs)
+      true
+      `(if ,(first xs)
+	   ,(cons 'and (rest xs))
+	   false)))
+
+(defmac or xs
+  (if (empty? xs)
+      false
+      `(if ,(first xs)
+	   true
+	   ,(cons 'or (rest xs)))))
 
 
 ;; files
