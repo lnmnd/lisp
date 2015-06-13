@@ -188,7 +188,7 @@
   (define (prim-/ args env)
     (apply / args))
 
-  (define (prim-conc args env)
+  (define (prim-str args env)
     (apply conc args))      
 
   (define (prim-slurp args env)
@@ -229,7 +229,7 @@
     (add-primitive '* prim-* env)
     (add-primitive '/ prim-/ env)
 
-    (add-primitive 'conc prim-conc env)
+    (add-primitive 'str prim-str env)
     (add-primitive 'slurp prim-slurp env)
     (add-primitive 'spit prim-spit env)
 
