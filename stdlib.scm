@@ -86,6 +86,11 @@
 	(map-it (cons (f (first xs)) acc) f (rest xs))))
   (map-it (list) f (reverse xs)))
 
+(defn reduce (f val xs)
+  (if (empty? xs)
+      val
+      (reduce f (f val (first xs)) (rest xs))))
+
 (defn partition-2 (xs)
   (defn partition-2-it (acc xs)
     (if (empty? xs)
