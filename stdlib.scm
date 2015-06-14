@@ -79,6 +79,15 @@
 	    (filter-it acc pred (rest xs)))))
   (filter-it (list) pred (reverse xs)))
 
+(defn not (x)
+  (if x
+      false
+      true))
+
+(defn remove (pred xs)
+  (filter (fn (x)
+	      (not (pred x))) xs))
+
 (defn map (f xs)
   (defn map-it (acc f xs)
     (if (empty? xs)
