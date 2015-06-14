@@ -100,6 +100,13 @@
 			(rest (rest xs)))))
   (reverse (partition-2-it (list) xs)))
 
+(defn count (xs)
+  (defn count-it (acc xs)
+    (if (empty? xs)
+	acc
+	(count-it (+ acc 1) (rest xs))))
+  (count-it 0 xs))
+
 
 ;; special forms
 
