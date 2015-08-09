@@ -11,11 +11,11 @@ csi -s lisp.scm
 Running example code:
 
 ```sh
-csi -s lisp.scm < example.scm
+csi -s lisp.scm < example.l
 ```
 
 Loading stdlib first:
 
 ```sh
-cat stdlib.scm myscript.scm | csi -s lisp.scm
+cat stdlib.l myscript.l | csi -s lisp.scm
 ```
