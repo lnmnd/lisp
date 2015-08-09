@@ -13,9 +13,3 @@ Running example code:
 ```sh
 csi -s lisp.scm < example.l
 ```
-
-Loading stdlib first:
-
-```sh
-cat stdlib.l myscript.l | csi -s lisp.scm
-```

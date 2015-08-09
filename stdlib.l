@@ -151,12 +151,3 @@
 
 (defmac cond xs
   (cons 'cond* (partition-2 xs)))
-
-
-;; files
-
-(defn load (file)
-  (eval (read-string
-	 (str "(do "
-	      (slurp file)
-	      ")"))))

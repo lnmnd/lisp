@@ -215,6 +215,20 @@
   (define (prim-eval args env)
     (lisp-eval (car args) env))
 
+  ;; if load was in stdlib.l :
+  ;; (defn load (file)
+  ;;   (eval (read-string
+  ;; 	   (str "(do "
+  ;; 		(slurp file)
+  ;; 		")"))))
+  (define (prim-load args env)
+    (let* ((content (prim-slurp args env))
+	   (content (conc "(" content ")"))
+	   (exps (prim-read-string (list content) env)))
+      (for-each (lambda (exp)
+		  (prim-eval (list exp) env))
+		exps)))
+
   (define (add-primitive symbol fn env)
     (env 'def symbol (list 'primfn fn)))
 
@@ -234,6 +248,8 @@
     (add-primitive 'spit prim-spit env)
 
     (add-primitive 'read-string prim-read-string env)
-    (add-primitive 'eval prim-eval env))
+    (add-primitive 'eval prim-eval env)
+
+    (add-primitive 'load prim-load env))
   
   )
