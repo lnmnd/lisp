@@ -1,4 +1,4 @@
-(load "stdlib.l")
+(load "core.l")
 
 (defn inc (n) (+ n 1))
 (inc 1) ; => 2

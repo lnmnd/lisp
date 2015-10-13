@@ -215,7 +215,7 @@
   (define (prim-eval args env)
     (lisp-eval (car args) env))
 
-  ;; if load was in stdlib.l :
+  ;; if load was in core.l :
   ;; (defn load (file)
   ;;   (eval (read-string
   ;; 	   (str "(do "
