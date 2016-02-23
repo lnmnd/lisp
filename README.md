@@ -5,11 +5,6 @@
 The REPL reads from stdin and writes to stdout.
 
 ```sh
-csi -s lisp.scm
+cat core.l - | csi -s lisp.scm
 ```
 
-Running example code:
-
-```sh
-csi -s lisp.scm < example.l
-```
